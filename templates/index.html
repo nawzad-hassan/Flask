@@ -1,8 +1,38 @@
-Hello,
-{% if current_user.is_authenticated() %}
- {{ current_user.username }}
-{% else %}
- Stranger
-{% endif %}!
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Flask App</title>
+</head>
+<body>
+    <div class="welcome-message">
+        {% if user_name %}
+            <p>Hello, {{ user_name }}!</p>
+        {% else %}
+            <p>Hello, Stranger!</p>
+        {% endif %}
+    </div>
 
+    <h1>Tervetuloa My Flask -sovellukseen</h1>
 
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}  <!-- Include the CSRF token field -->
+        <div>
+            {{ form.name.label }}
+            {{ form.name(size=32) }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+
+   {% if user_name %}
+        <p>Hello, {{ user_name }}!</p>
+    {% else %}
+        <p>Please enter your name above.</p>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+        {{ current_user.username }}
+    {% endif %}
+</body>
+</html>
