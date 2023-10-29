@@ -5,17 +5,25 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, UserMixin, login_user
-
-# Define a form using Flask-WTF
-class NameForm(FlaskForm):
-    name = StringField('What is your name?', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+import os
+from models import db  # Import db from the models.py file
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'your_generated_secret_key'  # Set the secret key directly
 
 # Initialize CSRF protection
 csrf = CSRFProtect(app)
+
+# Configure the SQLAlchemy database
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+db.init_app(app)  # Initialize the database with the Flask app
+
+# Define a form using Flask-WTF
+class NameForm(FlaskForm):
+    name = StringField('Mikä sinun nimesi on?', validators=[DataRequired()])
+    submit = SubmitField('Lähetä')
 
 Bootstrap(app)
 
@@ -36,6 +44,7 @@ def index():
     form = NameForm()
     
     if form.validate_on_submit():
+        
         user_name = form.name.data  # Updated the variable name
         
         # Store the user_name in the session

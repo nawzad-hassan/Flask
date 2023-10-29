@@ -19,20 +19,22 @@ form {
     text-align: center;
     margin: 20px auto;
     width: 80%;
-    background-color: #fff;
+    background-color: #5e5b5b;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 0 #042b80;
 }
 
 /* Style the input field and submit button */
 input[type="text"] {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin: 10px 0;
     font-size: 16px;
+    
 }
 
 input[type="submit"] {

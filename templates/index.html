@@ -7,9 +7,9 @@
 <body>
     <div class="welcome-message">
         {% if user_name %}
-            <p>Hello, {{ user_name }}!</p>
+            <p>Moi, {{ user_name }}!</p>
         {% else %}
-            <p>Hello, Stranger!</p>
+            <p>Moi, Tuntematon!</p>
         {% endif %}
     </div>
 
@@ -27,9 +27,9 @@
     </form>
 
    {% if user_name %}
-        <p>Hello, {{ user_name }}!</p>
+        <p>Moi, {{ user_name }}!</p>
     {% else %}
-        <p>Please enter your name above.</p>
+        <p>Kirjoita nimesi yläpuolelle.</p>
     {% endif %}
     {% if current_user.is_authenticated %}
         {{ current_user.username }}
