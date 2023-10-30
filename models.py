@@ -8,7 +8,7 @@ class Role(db.Model):
     name = db.Column(db.String(64), unique=True)
 
     def __repr__(self):
-        return '<Role %r>' % self.name
+        return f'<Role {self.name}>'
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -16,4 +16,5 @@ class User(db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return f'<User {self.username}>'
+
