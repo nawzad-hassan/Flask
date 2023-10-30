@@ -4,21 +4,21 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_wtf.csrf import CSRFProtect
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user
+from flask_sqlalchemy import SQLAlchemy  # Import SQLAlchemy
 import os
 from models import Role, User
+from app import app, db  # Import 'app' and 'db'
 
+# Initialize Flask app
 app = Flask(__name__, static_folder='static')
-app.secret_key = 'your_generated_secret_key'  # Set the secret key directly
+app.secret_key = 'your_generated_secret_key'
 
-# Initialize CSRF protection
-csrf = CSRFProtect(app)
-
-# Configure the SQLAlchemy database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:nawzad1@localhost/mysql'  # Update this line
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
-db = SQLAlchemy(app)  # Initialize SQLAlchemy with the Flask app
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 
 # Define a form using Flask-WTF
 class NameForm(FlaskForm):
@@ -28,12 +28,12 @@ class NameForm(FlaskForm):
 Bootstrap(app)
 
 login_manager = LoginManager(app)
-login_manager.login_view = "login"  # Specify the login view
+login_manager.login_view = "login"
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))  # Foreign key to roles
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __repr__(self):
         return f'<User {self.username}'
@@ -50,9 +50,6 @@ def index():
     if form.validate_on_submit():
         user_name = form.name.data
         session['user_name'] = user_name
-
-        with app.app_context():
-            db.create_all()
 
         return redirect(url_for('index'))
 
