@@ -8,7 +8,8 @@ from flask_login import LoginManager, UserMixin, login_user
 from flask_sqlalchemy import SQLAlchemy  # Import SQLAlchemy
 import os
 from models import Role, User
-from app import app, db  # Import 'app' and 'db'
+from app import create_app, db  # Import 'create_app' and 'db' from app.py
+
 
 # Initialize Flask app
 app = Flask(__name__, static_folder='static')
@@ -60,6 +61,15 @@ def index():
 @app.route('/user/<name>')
 def user(name):
     return render_template('user.html', name=name)
+
+@app.shell_context_processor
+def make_shell_context():
+    return {'app': app, 'db': db, 'Role': Role, 'User': User}
+
+# Add a route to serve the favicon
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('favicon.ico')
 
 if __name__ == '__main__':
     app.run(debug=True)
